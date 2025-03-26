@@ -1,0 +1,156 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 20px;
+  padding: 0;
+}
+
+header {
+  background-color: #f8f9fa;
+  padding: 0px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  border-bottom: 2px solid #e9ecef;
+}
+
+main {
+  padding: 20px;
+  margin-bottom: 200px;
+}
+
+footer {
+  background-color: #f8f9fa;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  border-top: 2px solid #e9ecef;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  z-index: 1000;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 22px;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+h3 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+h4 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+h5 {
+  margin-top: 0;
+  font-size: 14px;
+}
+
+h6 {
+  margin-top: 0;
+  font-size: 12px;
+}
+
+code {
+  font-size: 1.2em;
+}
+
+ul {
+  padding-inline-start: 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 10vmin;
+  width: 10vmin;
+  line-height: 10vmin;
+  font-size: 5vmin;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+}
+
+.board-row:after {
+  clear: both;
+  content: '';
+  display: table;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+}
+
+.game-info {
+  margin-left: 20px;
+}
+
+#board {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 80%;
+  margin: auto;
+}
+
+#board > div > .status {
+  font-size: 18px;
+}
+
+button {
+  border: none;
+}
+
+#botonesInicio {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+#botonesInicio button {
+  font-size: 18px;
+  padding: 10px 20px;
+  margin: 10px;
+}
+
+#newGame {
+  display: inline-block;
+  background-color: green;
+  color: white;
+}
+
+#joinGame {
+  display: inline-block;
+  background-color: blue;
+  color: black;
+}
