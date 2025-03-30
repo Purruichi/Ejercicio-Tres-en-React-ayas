@@ -152,5 +152,17 @@ button {
 #joinGame {
   display: inline-block;
   background-color: blue;
-  color: black;
+  color: white;
+}
+
+#leaveGame {
+  display: inline-block;
+  background-color: red;
+  color: white;
+}
+
+#resetGame {
+  display: inline-block;
+  background-color: orange;
+  color: white;
 }

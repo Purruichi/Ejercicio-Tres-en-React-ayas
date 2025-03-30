@@ -1,42 +1,42 @@
 import { useState, useEffect } from "react";
-import { getBoard, reloadBoard, createGame, getWinner, turno, joinGame } from "./Api";
+import { getBoard, reloadBoard, createGame, getWinner, turno, joinGame, leaveGame, getInGame, resetGame, getXIsNext, setXIsNext } from "./Api";
 
 export default function Board() {
-  const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(getBoard() || Array(9).fill(null));
   const [winner, setWinner] = useState(null);
-  const [isPolling, setIsPolling] = useState(true);
 
   useEffect(() => {
-    if (!isPolling) return;
+    if (!getInGame()) return;
 
     const interval = setInterval(() => {
       reloadBoard().then(() => {
         const newBoard = getBoard();
         if (JSON.stringify(squares) !== JSON.stringify(newBoard)) {
           setSquares(newBoard || Array(9).fill(null));
-          setIsPolling(false);
+          setXIsNext(!getXIsNext());
+
+          const currentWinner = getWinner();
+          if (currentWinner) {
+            setWinner(currentWinner);
+          }
         }
       });
-
-      const currentWinner = getWinner();
-      if (currentWinner) {
-        setWinner(currentWinner);
-        setIsPolling(false);
-      }
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [squares, isPolling]);
+  }, [squares]);
 
   function handleClick(i) {
-    if (squares[i] || winner) return;
+    console.log(getWinner());
+    if (squares[i] || getWinner()) return;
 
     turno(i).then(() => {
-      setSquares(getBoard() || Array(9).fill("Err"));
+      setSquares(getBoard() || Array(9).fill(null));
       setWinner(getWinner());
-      setXIsNext(!xIsNext);
-      setIsPolling(true);
+    })
+    .catch((error) => {
+      console.error("Error al hacer el movimiento:", error);
+      alert("No es tu turno de mover");
     });
   }
 
@@ -44,25 +44,47 @@ export default function Board() {
     createGame();
     setSquares(getBoard() || Array(9).fill(null));
     setWinner(null);
-    setIsPolling(true);
+  }
+
+  function handleLeaveGame() {
+    leaveGame()
+    .then(() => {
+      setSquares(Array(9).fill(null));
+      setWinner(null);
+    })
+    .catch((error) => {
+      console.error("Error al salir del juego:", error);
+    });
+  }
+
+  function handleResetGame() {
+    resetGame()
+    .then(() => {
+      setSquares(Array(9).fill(null));
+      setWinner(null);
+    })
+    .catch((error) => {
+      console.error("Error al reiniciar el juego:", error);
+    });
   }
 
   function handleJoinGame() {
     joinGame()
-      .then(() => {
-        console.log("Unido al juego");
-        setSquares(getBoard() || Array(9).fill(null));
-        setWinner(null);
-        setIsPolling(true);
-      })
-      .catch((error) => {
-        console.error("Error al unirse al juego:", error);
-      });
+    .then(() => {
+      console.log("Unido al juego");
+      setSquares(getBoard() || Array(9).fill(null));
+      setWinner(null);
+    })
+    .catch((error) => {
+      console.error("Error al unirse al juego:", error);
+    });
   }
 
   useEffect(() => {
     const newGameButton = document.getElementById("newGame");
     const joinGameButton = document.getElementById("joinGame");
+    const leaveGameButton = document.getElementById("leaveGame");
+    const resetGameButton = document.getElementById("resetGame");
 
     if (newGameButton) {
       newGameButton.addEventListener("click", handleNewGame);
@@ -72,6 +94,14 @@ export default function Board() {
       joinGameButton.addEventListener("click", handleJoinGame);
     }
 
+    if (leaveGameButton) {
+      leaveGameButton.addEventListener("click", handleLeaveGame);
+    }
+
+    if (resetGameButton) {
+      resetGameButton.addEventListener("click", handleResetGame);
+    }
+
     return () => {
       if (newGameButton) {
         newGameButton.removeEventListener("click", handleNewGame);
@@ -79,10 +109,21 @@ export default function Board() {
       if (joinGameButton) {
         joinGameButton.removeEventListener("click", handleJoinGame);
       }
+      if (leaveGameButton) {
+        leaveGameButton.removeEventListener("click", handleLeaveGame);
+      }
+      if (resetGameButton) {
+        resetGameButton.removeEventListener("click", handleResetGame);
+      }
     };
   }, []);
 
-  let status = winner ? `Ganador: ${winner}!` : `Siguiente jugador: ${xIsNext ? "X" : "O"}`;
+  let status;
+  if (getInGame() === false) {
+    status = "No estás en un juego.";
+  } else {
+    status = getWinner() ? `Ganador: ${getWinner()}!` : `Siguiente jugador: ${getXIsNext() ? "X" : "O"}`;
+  }
 
   return (
     <>

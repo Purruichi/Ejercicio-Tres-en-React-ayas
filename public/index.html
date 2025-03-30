@@ -9,8 +9,14 @@
   <header>
     <div id="botonesIncio">
       <button class="menuButton" id="newGame">New Game</button>
+      <button class="menuButton" id="leaveGame">Leave Game</button>
+      <button class="menuButton" id="resetGame">Reset Game</button>
       <button class="menuButton" id="joinGame">Join Game</button>
       <input type="text" id="gameId" placeholder="Game ID">
+      <div id="gameInfo">
+        <div id="outputGameId" class="gameInfo"></div>
+        <div id="outputError" class="gameInfo"></div>
+      </div>
     </div>
   </header>
   <main>
@@ -18,12 +24,10 @@
       <div id="root"></div>
     </div>
     <div id="output">
-      <div id="outputGameId"></div>
       <div id="outputPlayerXId"></div>
       <div id="outputPlayerOId"></div>
       <div id="outputBoard"></div>
       <div id="outputWinner"></div>
-      <div id="outputError"></div>
   </div>
   </main>
   <footer>
